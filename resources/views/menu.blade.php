@@ -16,8 +16,8 @@
                 </div>
             </div>
             <div class="row g-4" id="menu-container">
-                @foreach($menus as $index => $menu)
-                <div class="col-md-3 menu-item" data-category="{{ $menu->kategori }}" data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}">
+                @forelse($menus as $index => $menu)
+                <div class="col-md-3 menu-item" data-category="{{ strtolower(trim($menu->kategori)) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}">
                     <div class="menu-card" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 30px; overflow: hidden; transition: all 0.4s; border: 1px solid rgba(255, 255, 255, 0.5); height: 100%;">
                         <img src="{{ $menu->gambar ?? 'https://via.placeholder.com/300' }}" class="menu-img" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 30px 30px 0 0;">
                         <div class="menu-content" style="padding: 24px;">
@@ -25,12 +25,24 @@
                             <p class="text-muted small mb-2">{{ $menu->deskripsi }}</p>
                             <div class="d-flex justify-content-between align-items-center">
                                 <span class="price" style="background: var(--header-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 1.3rem;">Rp {{ number_format($menu->harga, 0, ',', '.') }}</span>
-                                <a href="#" class="btn btn-sm btn-custom-red rounded-circle"><i class="bi bi-plus"></i></a>
+                                <button onclick="addToCart({
+                                    id: {{ $menu->id }},
+                                    name: '{{ $menu->nama_menu }}',
+                                    price: {{ $menu->harga }},
+                                    image: '{{ $menu->gambar ?? 'https://via.placeholder.com/300' }}'
+                                })" class="btn btn-sm btn-custom-red rounded-circle">
+                                    <i class="bi bi-plus"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-info-circle text-muted mb-3" style="font-size: 3rem;"></i>
+                    <p class="text-muted">Belum ada menu yang tersedia.</p>
+                </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -47,15 +59,18 @@
             this.classList.remove('btn-outline-custom');
             this.classList.add('btn-custom-red', 'active');
 
-            const category = this.getAttribute('data-category');
+            const category = this.getAttribute('data-category').toLowerCase().trim();
             
             document.querySelectorAll('.menu-item').forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
+                const itemCategory = item.getAttribute('data-category').toLowerCase().trim();
+                if (category === 'all' || itemCategory === category) {
                     item.style.display = 'block';
                 } else {
                     item.style.display = 'none';
                 }
             });
+            // Refresh AOS to handle newly visible elements
+            AOS.refresh();
         });
     });
 </script>

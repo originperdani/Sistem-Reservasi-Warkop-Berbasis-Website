@@ -32,11 +32,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create Meja
-        \App\Models\Meja::create(['nama_meja' => 'Meja 1', 'kapasitas' => 4, 'status' => 'tersedia']);
-        \App\Models\Meja::create(['nama_meja' => 'Meja 2 (VIP)', 'kapasitas' => 6, 'status' => 'tersedia']);
-        \App\Models\Meja::create(['nama_meja' => 'Meja 3 (Outdoor)', 'kapasitas' => 2, 'status' => 'tersedia']);
-        \App\Models\Meja::create(['nama_meja' => 'Meja 4', 'kapasitas' => 4, 'status' => 'tersedia']);
-        \App\Models\Meja::create(['nama_meja' => 'Meja 5', 'kapasitas' => 2, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 1 (Indoor AC - Non Smoking)', 'kapasitas' => 4, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 2 (Indoor AC - Non Smoking)', 'kapasitas' => 2, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 3 (Indoor AC - Non Smoking)', 'kapasitas' => 6, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 4 (Outdoor - Smoking Area)', 'kapasitas' => 4, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 5 (Outdoor - Smoking Area)', 'kapasitas' => 4, 'status' => 'tersedia']);
+        \App\Models\Meja::create(['nama_meja' => 'Meja 6 (Outdoor - Smoking Area)', 'kapasitas' => 4, 'status' => 'tersedia']);
 
         // Create Menu - Minuman Warkop
         \App\Models\Menu::create(['nama_menu' => 'Kopi Kapal Api Mix', 'harga' => 5000, 'kategori' => 'minuman', 'deskripsi' => 'Kopi Kapal Api Mix mantap', 'gambar' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=600']);
