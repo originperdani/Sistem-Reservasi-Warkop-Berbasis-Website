@@ -20,22 +20,38 @@ class MejaController extends Controller
 
     public function store(Request $request)
     {
-        // CRUD logic would go here
+        $request->validate([
+            'nama_meja' => 'required|string|max:255',
+            'kapasitas' => 'required|numeric|min:1',
+            'status' => 'required|string|in:tersedia,tidak tersedia',
+        ]);
+
+        Meja::create($request->all());
+
+        return back()->with('success', 'Meja berhasil ditambahkan.');
     }
 
     public function edit(Meja $meja)
     {
-        return view('admin.mejas.edit', compact('meja'));
+        return response()->json($meja);
     }
 
     public function update(Request $request, Meja $meja)
     {
-        // Update logic would go here
+        $request->validate([
+            'nama_meja' => 'required|string|max:255',
+            'kapasitas' => 'required|numeric|min:1',
+            'status' => 'required|string|in:tersedia,tidak tersedia',
+        ]);
+
+        $meja->update($request->all());
+
+        return back()->with('success', 'Meja berhasil diperbarui.');
     }
 
     public function destroy(Meja $meja)
     {
         $meja->delete();
-        return back()->with('success', 'Table deleted successfully.');
+        return back()->with('success', 'Meja berhasil dihapus.');
     }
 }

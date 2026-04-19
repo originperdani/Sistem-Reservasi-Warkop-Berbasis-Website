@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservasi extends Model
 {
-    protected $fillable = ['user_id', 'tanggal', 'waktu', 'meja_id', 'durasi', 'status'];
+    protected $fillable = ['user_id', 'whatsapp', 'tanggal', 'waktu', 'meja_id', 'durasi', 'status'];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'durasi' => 'integer',
+    ];
 
     public function user()
     {

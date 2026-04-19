@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
     <style>
         :root {
             --primary-red: #9B1B30;
@@ -219,15 +221,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('menu.*') ? 'active' : '' }}" href="{{ auth()->check() ? route('menu.index') : route('login') }}">Menu</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ auth()->check() ? route('dashboard') : route('login') }}">Reservasi Meja</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('menu.*') ? 'active' : '' }}" href="{{ route('menu.index') }}">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        @if(auth()->check() && auth()->user()->role == 'admin')
+                            Dashboard Admin
+                        @else
+                            Reservasi Meja
+                        @endif
+                    </a></li>
                     
                     <!-- Shopping Cart Icon -->
                     <li class="nav-item me-2">
-                        <button class="nav-link px-2 border-0 bg-transparent position-relative cart-btn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                            <i class="bi bi-cart3"></i>
-                            <span id="cart-badge" class="position-absolute translate-middle badge rounded-pill d-none">0</span>
-                        </button>
+                        @auth
+                            <button class="nav-link px-2 border-0 bg-transparent position-relative cart-btn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                                <i class="bi bi-cart3"></i>
+                                <span id="cart-badge" class="position-absolute translate-middle badge rounded-pill d-none">0</span>
+                            </button>
+                        @else
+                            <a href="{{ route('login') }}" class="nav-link px-2 border-0 bg-transparent position-relative cart-btn">
+                                <i class="bi bi-cart3"></i>
+                            </a>
+                        @endauth
                     </li>
 
                     @if (Route::has('login'))
@@ -237,7 +251,13 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 p-2">
-                                    <li><a class="dropdown-item rounded-3 mb-1" href="{{ route('dashboard') }}"><i class="bi bi-calendar-check me-2"></i> Reservasi Meja</a></li>
+                                    <li><a class="dropdown-item rounded-3 mb-1" href="{{ route('dashboard') }}">
+                                        @if(auth()->user()->role == 'admin')
+                                            <i class="bi bi-speedometer2 me-2"></i> Dashboard Admin
+                                        @else
+                                            <i class="bi bi-calendar-check me-2"></i> Reservasi Meja
+                                        @endif
+                                    </a></li>
                                     <li><a class="dropdown-item rounded-3 mb-1" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> Profil</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
@@ -328,7 +348,7 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ route('home') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Beranda</a></li>
                         <li class="mb-2"><a href="{{ route('menu.index') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Menu</a></li>
-                        <li class="mb-2"><a href="{{ auth()->check() ? route('dashboard') : route('login') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Reservasi</a></li>
+                        <li class="mb-2"><a href="{{ route('dashboard') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Reservasi</a></li>
                     </ul>
                 </div>
 
@@ -387,7 +407,10 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
     <script>
         AOS.init({
             duration: 1000,
@@ -456,16 +479,20 @@
         }
 
         window.addToCart = function(item) {
-            currentItem = item;
-            currentQty = 1;
-            
-            document.getElementById('modal-item-name').innerText = item.name;
-            document.getElementById('modal-item-price').innerText = 'Rp ' + item.price.toLocaleString('id-ID');
-            document.getElementById('modal-item-image').src = item.image;
-            document.getElementById('modal-qty').innerText = currentQty;
-            
-            const modal = new bootstrap.Modal(document.getElementById('quantityModal'));
-            modal.show();
+            @auth
+                currentItem = item;
+                currentQty = 1;
+                
+                document.getElementById('modal-item-name').innerText = item.name;
+                document.getElementById('modal-item-price').innerText = 'Rp ' + item.price.toLocaleString('id-ID');
+                document.getElementById('modal-item-image').src = item.image;
+                document.getElementById('modal-qty').innerText = currentQty;
+                
+                const modal = new bootstrap.Modal(document.getElementById('quantityModal'));
+                modal.show();
+            @else
+                window.location.href = "{{ route('login') }}";
+            @endauth
         };
 
         window.adjustModalQty = function(change) {

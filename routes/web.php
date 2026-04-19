@@ -13,20 +13,20 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/menu', function () {
+    return view('menu', [
+        'menus' => \App\Models\Menu::all()
+    ]);
+})->name('menu.index');
+
+Route::get('/dashboard', function () {
+    if (auth()->check() && auth()->user()->role == 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    return view('dashboard');
+})->name('dashboard');
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/menu', function () {
-        return view('menu', [
-            'menus' => \App\Models\Menu::all()
-        ]);
-    })->name('menu.index');
-
-    Route::get('/dashboard', function () {
-        if (auth()->user()->role == 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-        return view('dashboard');
-    })->name('dashboard');
-
     // User Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('mejas', MejaController::class);
         Route::get('/reservasis', [AdminController::class, 'reservasis'])->name('admin.reservasis');
         Route::post('/reservasis/{reservasi}/verify', [AdminController::class, 'verifyPayment'])->name('admin.verify');
+        Route::post('/reservasis/{reservasi}/lunas', [AdminController::class, 'lunasPayment'])->name('admin.lunas');
     });
 });
 
