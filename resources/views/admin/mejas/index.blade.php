@@ -11,7 +11,7 @@
     </x-slot>
 
     <div class="py-12 min-h-screen">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-[1200px] mx-auto px-8">
             @if(session('success'))
                 <div class="bg-green-100 border border-green-200 text-green-700 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 shadow-sm" role="alert">
                     <i class="bi bi-check-circle-fill"></i>

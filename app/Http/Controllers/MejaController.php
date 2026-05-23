@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meja;
+use App\Services\MejaService;
 use Illuminate\Http\Request;
 
 class MejaController extends Controller
 {
+    protected $mejaService;
+
+    public function __construct(MejaService $mejaService)
+    {
+        $this->mejaService = $mejaService;
+    }
+
     public function index()
     {
-        $mejas = Meja::all();
+        $mejas = $this->mejaService->getAllMejas();
         return view('admin.mejas.index', compact('mejas'));
     }
 
@@ -26,7 +34,7 @@ class MejaController extends Controller
             'status' => 'required|string|in:tersedia,tidak tersedia',
         ]);
 
-        Meja::create($request->all());
+        $this->mejaService->storeMeja($request->all());
 
         return back()->with('success', 'Meja berhasil ditambahkan.');
     }
@@ -44,14 +52,14 @@ class MejaController extends Controller
             'status' => 'required|string|in:tersedia,tidak tersedia',
         ]);
 
-        $meja->update($request->all());
+        $this->mejaService->updateMeja($meja, $request->all());
 
         return back()->with('success', 'Meja berhasil diperbarui.');
     }
 
     public function destroy(Meja $meja)
     {
-        $meja->delete();
+        $this->mejaService->deleteMeja($meja);
         return back()->with('success', 'Meja berhasil dihapus.');
     }
 }

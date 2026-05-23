@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Reservasi;
 use App\Models\User;
-use App\Models\Menu;
-use App\Models\Meja;
 use App\Models\Pembayaran;
+use App\Services\ReservasiService;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    protected $reservasiService;
+
+    public function __construct(ReservasiService $reservasiService)
+    {
+        $this->reservasiService = $reservasiService;
+    }
+
     public function index()
     {
         $total_pemasukan = Pembayaran::where('status', 'valid')
@@ -25,7 +31,7 @@ class AdminController extends Controller
 
     public function reservasis()
     {
-        $reservasis = Reservasi::with(['user', 'meja', 'pembayaran', 'detailPesanans.menu'])->latest()->get();
+        $reservasis = $this->reservasiService->getAllReservasis();
         return view('admin.reservasis', compact('reservasis'));
     }
 
@@ -35,23 +41,18 @@ class AdminController extends Controller
             'status' => 'required|in:valid,ditolak'
         ]);
 
-        $reservasi->pembayaran->update(['status' => $request->status]);
-        $reservasi->update(['status' => $request->status]);
+        $this->reservasiService->updatePaymentStatus($reservasi, $request->status);
 
         return back()->with('success', 'Status pembayaran diperbarui.');
     }
 
     public function lunasPayment(Reservasi $reservasi)
     {
-        if (!$reservasi->pembayaran) {
-            return back()->with('error', 'Data pembayaran tidak ditemukan.');
+        try {
+            $this->reservasiService->pelunasan($reservasi);
+            return back()->with('success', 'Pembayaran telah dilunaskan.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        $reservasi->pembayaran->update([
-            'sisa_bayar' => 0,
-            'status' => 'valid'
-        ]);
-
-        return back()->with('success', 'Pembayaran telah dilunaskan.');
     }
 }

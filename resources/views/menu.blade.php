@@ -15,23 +15,23 @@
                     <button class="btn btn-outline-custom rounded-pill filter-btn" data-category="cemilan">Cemilan</button>
                 </div>
             </div>
-            <div class="row g-4" id="menu-container">
+            <div class="row g-3 g-md-4" id="menu-container">
                 @forelse($menus as $index => $menu)
-                <div class="col-md-3 menu-item" data-category="{{ strtolower(trim($menu->kategori)) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}">
-                    <div class="menu-card" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 30px; overflow: hidden; transition: all 0.4s; border: 1px solid rgba(255, 255, 255, 0.5); height: 100%;">
-                        <img src="{{ $menu->gambar ?? 'https://via.placeholder.com/300' }}" class="menu-img" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 220px; object-fit: cover; border-radius: 30px 30px 0 0;">
-                        <div class="menu-content" style="padding: 24px;">
-                            <h5 class="fw-bold mb-1">{{ $menu->nama_menu }}</h5>
-                            <p class="text-muted small mb-2">{{ $menu->deskripsi }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="price" style="background: var(--header-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 1.3rem;">Rp {{ number_format($menu->harga, 0, ',', '.') }}</span>
+                <div class="col-6 col-md-3 menu-item" data-category="{{ strtolower(trim($menu->kategori)) }}" data-aos="fade-up" data-aos-delay="{{ ($index % 4) * 100 }}">
+                    <div class="menu-card" style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; transition: all 0.4s; border: 1px solid rgba(255, 255, 255, 0.5); height: 100%;">
+                        <img src="{{ $menu->gambar ?? 'https://via.placeholder.com/300' }}" class="menu-img" alt="{{ $menu->nama_menu }}" style="width: 100%; height: 150px; object-fit: cover;">
+                        <div class="menu-content" style="padding: 12px;">
+                            <h6 class="fw-bold mb-1 text-truncate" style="font-size: 0.9rem;">{{ $menu->nama_menu }}</h6>
+                            <p class="text-muted small mb-2 text-truncate d-none d-md-block">{{ $menu->deskripsi }}</p>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
+                                <span class="price" style="background: var(--header-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; font-size: 0.9rem;">Rp {{ number_format($menu->harga, 0, ',', '.') }}</span>
                                 <button onclick="addToCart({
                                     id: {{ $menu->id }},
                                     name: '{{ $menu->nama_menu }}',
                                     price: {{ $menu->harga }},
                                     image: '{{ $menu->gambar ?? 'https://via.placeholder.com/300' }}'
-                                })" class="btn btn-sm btn-custom-red rounded-circle">
-                                    <i class="bi bi-plus"></i>
+                                })" class="btn btn-sm btn-custom-red rounded-circle p-1" style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="bi bi-plus" style="font-size: 1rem;"></i>
                                 </button>
                             </div>
                         </div>

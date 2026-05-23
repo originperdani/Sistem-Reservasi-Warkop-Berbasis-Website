@@ -2,8 +2,18 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=1200">
     <title>@yield('title', 'Warkop Pamulang')</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @import url(https://db.onlinewebfonts.com/c/515d706c09a027aff7369b0cabd4c7aa?family=Nagoda);
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+    </style>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -15,10 +25,22 @@
             --secondary-red: #7A1526;
             --cream-bg: #F5E6D3;
             --cream-light: #FEFBF6;
+            --text-main: #4A1E1B;
             --header-gradient: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
         }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
         body {
-            font-family: 'Poppins', sans-serif;
+            min-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Lucida Bright', 'Lucida Serif', 'Georgia', serif;
             background: var(--cream-light);
             background-image: 
                 radial-gradient(at 0% 0%, rgba(245, 230, 211, 0.5) 0px, transparent 50%),
@@ -26,10 +48,72 @@
                 radial-gradient(at 100% 100%, rgba(245, 230, 211, 0.5) 0px, transparent 50%),
                 radial-gradient(at 0% 100%, rgba(155, 27, 48, 0.05) 0px, transparent 50%);
             background-attachment: fixed;
-            color: #4A1E1B;
+            color: var(--text-main);
             overflow-x: hidden;
         }
+        body :not(input):not(textarea):not(select):not(option):not([contenteditable="true"]):not([contenteditable="plaintext-only"]) {
+            caret-color: transparent;
+        }
+        h1, h2, h3, h4, h5, h6, p, span, a, button, img, i {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        img {
+            -webkit-user-drag: none;
+        }
+        input, textarea, select, option, [contenteditable="true"], [contenteditable="plaintext-only"] {
+            -webkit-user-select: text;
+            user-select: text;
+            caret-color: auto;
+        }
+        .container {
+            max-width: 1200px !important;
+            width: 1200px !important;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1, h2, h3, h4, h5, h6, .hero-title, .navbar-brand {
+            font-family: 'Nagoda', sans-serif !important;
+        }
+
+        /* Fluid Typography & Layout for Desktop look on Mobile */
+        @media (max-width: 1199px) {
+            html {
+                font-size: 14px; /* Slightly smaller base font */
+            }
+            .container {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            html {
+                font-size: 12px;
+            }
+            /* Keep desktop-like columns where requested */
+            .keep-desktop .row {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .keep-desktop .col-md-6, 
+            .keep-desktop .col-md-4,
+            .keep-desktop .col-md-3 {
+                flex: 0 0 auto !important;
+                width: 80% !important; /* Show part of next item to indicate scroll */
+            }
+            
+            /* Fluid Images */
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
         .navbar {
+            width: 100%;
             background: rgba(254, 251, 246, 0.8);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -106,11 +190,33 @@
             color: white;
             transform: translateY(-3px);
         }
+        .main-content {
+            flex: 1 0 auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
         .footer {
+            flex-shrink: 0;
+            width: 100%;
             background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
             padding: 80px 0 30px;
             position: relative;
             color: white !important;
+            z-index: 10;
+        }
+        /* Fix blobs to stay within bounds */
+        .blob {
+            max-width: 100%;
+        }
+        :root {
+            --primary-red: #9B1B30;
+            --secondary-red: #7A1526;
+            --cream-bg: #F5E6D3;
+            --cream-light: #FEFBF6;
+            --header-gradient: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
         }
         .footer h5 {
             color: white;
@@ -200,25 +306,24 @@
         }
         .offcanvas-cart {
             border-left: 5px solid var(--primary-red);
+            max-width: 100%;
         }
     </style>
     @stack('styles')
 </head>
 <body>
-    <div class="blob" style="top: -10%; left: -10%;"></div>
-    <div class="blob" style="top: 40%; right: -10%; background: var(--cream-bg); opacity: 0.15;"></div>
-    <div class="blob" style="bottom: -10%; left: 20%;"></div>
-
-    <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="main-content">
+        <div class="blob" style="top: -10%; left: -10%;"></div>
+        <div class="blob" style="top: 40%; right: -10%; background: var(--cream-bg); opacity: 0.15;"></div>
+        <div class="blob" style="bottom: -10%; left: 20%;"></div>
+        
+        <nav class="navbar navbar-expand sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
                 <i class="bi bi-cup-hot-fill me-2 text-custom-red" style="font-size: 1.5rem;"></i>
                 <span class="fw-bold text-custom-red">Warkop Pamulang</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('menu.*') ? 'active' : '' }}" href="{{ route('menu.index') }}">Menu</a></li>
@@ -338,12 +443,13 @@
             </div>
         </div>
     </div>
+    </div>
 
     <footer class="footer">
         <div class="container">
             <div class="row g-4 align-items-start" data-aos="fade-up">
                 <!-- Column 1: Toko Kami -->
-                <div class="col-lg-2 col-md-6 text-center text-lg-start">
+                <div class="col-2 text-start">
                     <h5 class="fw-bold mb-3">Toko Kami</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ route('home') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Beranda</a></li>
@@ -353,7 +459,7 @@
                 </div>
 
                 <!-- Column 2: Kontak -->
-                <div class="col-lg-2 col-md-6 text-center text-lg-start">
+                <div class="col-2 text-start">
                     <h5 class="fw-bold mb-3">Kontak Admin</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2">
@@ -375,7 +481,7 @@
                 </div>
 
                 <!-- Column 3: Branding (Absolute Center) -->
-                <div class="col-lg-4 col-md-12 text-center position-relative">
+                <div class="col-4 text-center position-relative">
                     <h5 class="mb-3 invisible">Spacer</h5>
                     <div class="position-relative mb-4">
                         <i class="bi bi-cup-hot-fill position-absolute start-50 translate-middle-x" style="font-size: 2.5rem; top: -4.5rem;"></i>
@@ -387,12 +493,12 @@
                 </div>
 
                 <!-- Column 4: Alamat Kami -->
-                <div class="col-lg-4 col-md-12 text-center text-lg-end">
+                <div class="col-4 text-end">
                     <h5 class="fw-bold mb-3">Alamat Kami</h5>
                     <ul class="list-unstyled">
                         <li class="mb-3">
-                            <a href="https://maps.app.goo.gl/NJNd3rnqHpyWFJQP7" target="_blank" class="d-inline-flex justify-content-lg-end align-items-start text-decoration-none text-white hover:text-cream-bg transition">
-                                <span class="me-3 small text-lg-end">Jl. Raya Puspitek No.31, Buaran, Serpong, Tangsel</span>
+                            <a href="https://maps.app.goo.gl/NJNd3rnqHpyWFJQP7" target="_blank" class="d-inline-flex justify-content-end align-items-start text-decoration-none text-white hover:text-cream-bg transition">
+                                <span class="me-3 small text-end">Jl. Raya Puspitek No.31, Buaran, Serpong, Tangsel</span>
                                 <i class="bi bi-geo-alt-fill flex-shrink-0"></i>
                             </a>
                         </li>

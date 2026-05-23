@@ -3,13 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Services\MenuService;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
+    protected $menuService;
+
+    public function __construct(MenuService $menuService)
+    {
+        $this->menuService = $menuService;
+    }
+
     public function index()
     {
-        $menus = Menu::all();
+        $menus = $this->menuService->getAllMenus();
         return view('admin.menus.index', compact('menus'));
     }
 
@@ -28,15 +36,7 @@ class MenuController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('gambar')) {
-            $imageName = time().'.'.$request->gambar->extension();
-            $request->gambar->move(public_path('images/menu'), $imageName);
-            $data['gambar'] = '/images/menu/' . $imageName;
-        }
-
-        Menu::create($data);
+        $this->menuService->storeMenu($request->all(), $request->file('gambar'));
 
         return back()->with('success', 'Menu berhasil ditambahkan.');
     }
@@ -56,32 +56,14 @@ class MenuController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $data = $request->all();
-
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            if ($menu->gambar && file_exists(public_path($menu->gambar)) && !str_contains($menu->gambar, 'http')) {
-                unlink(public_path($menu->gambar));
-            }
-
-            $imageName = time().'.'.$request->gambar->extension();
-            $request->gambar->move(public_path('images/menu'), $imageName);
-            $data['gambar'] = '/images/menu/' . $imageName;
-        }
-
-        $menu->update($data);
+        $this->menuService->updateMenu($menu, $request->all(), $request->file('gambar'));
 
         return back()->with('success', 'Menu berhasil diperbarui.');
     }
 
     public function destroy(Menu $menu)
     {
-        // Hapus gambar jika ada
-        if ($menu->gambar && file_exists(public_path($menu->gambar)) && !str_contains($menu->gambar, 'http')) {
-            unlink(public_path($menu->gambar));
-        }
-        
-        $menu->delete();
+        $this->menuService->deleteMenu($menu);
         return back()->with('success', 'Menu berhasil dihapus.');
     }
 }

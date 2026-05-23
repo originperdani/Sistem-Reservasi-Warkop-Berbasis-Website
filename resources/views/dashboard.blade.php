@@ -55,12 +55,12 @@
         }
         .meja-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
         }
         .meja-card {
             border-radius: 20px;
-            padding: 25px;
+            padding: 15px;
             text-align: center;
             transition: all 0.3s ease;
             border: 2px solid transparent;
@@ -76,9 +76,16 @@
             color: #dc3545;
         }
         .meja-card i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
             display: block;
+        }
+        .meja-card h5 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        .meja-card small {
+            font-size: 0.7rem;
         }
         .status-dot {
             width: 10px;
@@ -87,6 +94,7 @@
             display: inline-block;
             margin-right: 8px;
         }
+
     </style>
 @endpush
 
@@ -289,14 +297,14 @@
                                     <tbody>
                                         @forelse(auth()->user()->reservasis as $res)
                                         <tr>
-                                            <td class="py-4 px-4 fw-bold text-dark">{{ $res->meja->nama_meja }}</td>
-                                            <td class="py-4 px-4">
+                                            <td class="py-4 px-4 fw-bold text-dark" data-label="Meja">{{ $res->meja->nama_meja }}</td>
+                                            <td class="py-4 px-4" data-label="Waktu">
                                                 <div class="d-flex flex-column">
                                                     <span class="fw-semibold text-dark">{{ $res->tanggal->format('d/m/Y') }}</span>
                                                     <span class="text-muted small">{{ $res->waktu }} WIB</span>
                                                 </div>
                                             </td>
-                                            <td class="py-4 px-4 text-center">
+                                            <td class="py-4 px-4 text-center" data-label="Status">
                                                 @php
                                                     $statusClass = $res->status == 'valid' ? 'bg-success text-white' : ($res->status == 'pending' ? 'bg-warning text-dark' : 'bg-danger text-white');
                                                     $statusText = $res->status == 'valid' ? 'Berhasil' : ($res->status == 'pending' ? 'Menunggu' : 'Dibatalkan');

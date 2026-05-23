@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-[1200px] mx-auto px-8">
             <!-- Header Section -->
             <div class="mb-8" data-aos="fade-right">
                 <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">
@@ -16,7 +16,7 @@
             </div>
 
             <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="grid grid-cols-3 gap-6 mb-10">
                 <div class="bg-white/80 backdrop-blur-xl overflow-hidden shadow-sm rounded-3xl p-8 border border-white/50 hover:shadow-md transition-all duration-300">
                     <div class="flex items-center gap-4">
                         <div class="p-3 bg-warkop-red/10 rounded-2xl">

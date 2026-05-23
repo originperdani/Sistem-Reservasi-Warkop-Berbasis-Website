@@ -2,15 +2,18 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=1200">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <style>
+             @import url(https://db.onlinewebfonts.com/c/515d706c09a027aff7369b0cabd4c7aa?family=Nagoda);
+             @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+         </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
         <!-- Scripts -->
@@ -36,6 +39,65 @@
             }
         </script>
         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+            }
+            body {
+                min-width: 1200px;
+                width: 100%;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                font-family: 'Lucida Bright', 'Lucida Serif', 'Georgia', serif !important;
+            }
+            body :not(input):not(textarea):not(select):not(option):not([contenteditable="true"]):not([contenteditable="plaintext-only"]) {
+                caret-color: transparent;
+            }
+            h1, h2, h3, h4, h5, h6, p, span, a, button, img, i {
+                -webkit-user-select: none;
+                user-select: none;
+            }
+            img {
+                -webkit-user-drag: none;
+            }
+            input, textarea, select, option, [contenteditable="true"], [contenteditable="plaintext-only"] {
+                -webkit-user-select: text;
+                user-select: text;
+                caret-color: auto;
+            }
+            
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Nagoda', sans-serif !important;
+            }
+            .main-content {
+                flex: 1 0 auto;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+            }
+            .container, .max-w-7xl, .max-w-\[1200px\] {
+                max-width: 1200px !important;
+                width: 1200px !important;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            /* Responsive Font scaling */
+            @media (max-width: 1199px) {
+                html { font-size: 14px; }
+            }
+            @media (max-width: 768px) {
+                html { font-size: 12px; }
+                .container, .max-w-7xl {
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                }
+            }
             :root {
                 --primary-red: #9B1B30;
                 --secondary-red: #7A1526;
@@ -44,10 +106,13 @@
                 --header-gradient: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
             }
             .footer {
+                flex-shrink: 0;
+                width: 100%;
                 background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
                 padding: 80px 0 30px;
                 position: relative;
                 color: white !important;
+                z-index: 10;
             }
             .footer h5 {
                 color: white;
@@ -100,18 +165,18 @@
          @stack('styles')
          {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>
-    <body class="font-sans antialiased bg-warkop-cream-light text-[#4A1E1B] overflow-x-hidden">
-        <div class="blob" style="top: -10%; left: -10%;"></div>
-        <div class="blob" style="top: 40%; right: -10%; background: var(--cream-bg); opacity: 0.15;"></div>
-        <div class="blob" style="bottom: -10%; left: 20%;"></div>
-
-        <div class="min-h-screen bg-transparent overflow-x-hidden">
+    <body class="font-sans antialiased bg-warkop-cream-light text-[#4A1E1B]">
+        <div class="main-content bg-transparent">
+            <div class="blob" style="top: -10%; left: -10%;"></div>
+            <div class="blob" style="top: 40%; right: -10%; background: var(--cream-bg); opacity: 0.15;"></div>
+            <div class="blob" style="bottom: -10%; left: 20%;"></div>
+            
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-warkop-red/10">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-[1200px] mx-auto py-6 px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -123,8 +188,8 @@
             </main>
         </div>
 
-        <footer class="footer overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <footer class="footer">
+            <div class="max-w-[1200px] mx-auto px-8">
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start" data-aos="fade-up">
                     <!-- Column 1: Admin Quick Links -->
                     <div class="col-span-1 md:col-span-3 text-center md:text-left">
