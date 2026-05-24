@@ -311,8 +311,8 @@
     </style>
     @stack('styles')
 </head>
-<body>
-    <div class="main-content">
+<body style="display:flex; flex-direction:column; min-height:100vh; margin:0;">
+    <div class="main-content" style="flex:1;">
         <div class="blob" style="top: -10%; left: -10%;"></div>
         <div class="blob" style="top: 40%; right: -10%; background: var(--cream-bg); opacity: 0.15;"></div>
         <div class="blob" style="bottom: -10%; left: 20%;"></div>
@@ -327,6 +327,8 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('menu.*') ? 'active' : '' }}" href="{{ route('menu.index') }}">Menu</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('tentang-kami') ? 'active' : '' }}" href="{{ route('tentang-kami') }}">Tentang Kami</a></li>
+                    <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('panduan') ? 'active' : '' }}" href="{{ route('panduan') }}">Panduan</a></li>
                     <li class="nav-item"><a class="nav-link px-3 {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                         @if(auth()->check() && auth()->user()->role == 'admin')
                             Dashboard Admin
@@ -454,6 +456,8 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{{ route('home') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Beranda</a></li>
                         <li class="mb-2"><a href="{{ route('menu.index') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Menu</a></li>
+                        <li class="mb-2"><a href="{{ route('tentang-kami') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Tentang Kami</a></li>
+                        <li class="mb-2"><a href="{{ route('panduan') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Panduan</a></li>
                         <li class="mb-2"><a href="{{ route('dashboard') }}" class="text-white text-decoration-none hover:text-cream-bg transition">Reservasi</a></li>
                     </ul>
                 </div>

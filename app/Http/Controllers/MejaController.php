@@ -31,6 +31,7 @@ class MejaController extends Controller
         $request->validate([
             'nama_meja' => 'required|string|max:255',
             'kapasitas' => 'required|numeric|min:1',
+            'tipe' => 'required|in:indoor,outdoor',
             'status' => 'required|string|in:tersedia,tidak tersedia',
         ]);
 
@@ -49,6 +50,7 @@ class MejaController extends Controller
         $request->validate([
             'nama_meja' => 'required|string|max:255',
             'kapasitas' => 'required|numeric|min:1',
+            'tipe' => 'required|in:indoor,outdoor',
             'status' => 'required|string|in:tersedia,tidak tersedia',
         ]);
 

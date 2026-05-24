@@ -26,7 +26,29 @@ class AdminController extends Controller
         $total_pelanggan = User::where('role', 'user')->count();
         $recent_reservasis = Reservasi::with(['user', 'meja'])->latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('total_pemasukan', 'total_reservasi', 'total_pelanggan', 'recent_reservasis'));
+        // Data untuk chart (6 bulan terakhir)
+        $chart_labels = [];
+        $chart_data = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $month = now()->subMonths($i);
+            $chart_labels[] = $month->translatedFormat('M');
+            
+            $income = Pembayaran::where('status', 'valid')
+                ->whereMonth('created_at', $month->month)
+                ->whereYear('created_at', $month->year)
+                ->selectRaw('SUM(total_bayar - sisa_bayar) as total')
+                ->first()->total ?? 0;
+            $chart_data[] = $income;
+        }
+
+        return view('admin.dashboard', compact(
+            'total_pemasukan', 
+            'total_reservasi', 
+            'total_pelanggan', 
+            'recent_reservasis',
+            'chart_labels',
+            'chart_data'
+        ));
     }
 
     public function reservasis()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Meja extends Model
 {
-    protected $fillable = ['nama_meja', 'kapasitas', 'status'];
+    protected $fillable = ['nama_meja', 'kapasitas', 'tipe', 'sub_tipe', 'status'];
 
     public function reservasis()
     {

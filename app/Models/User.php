@@ -25,7 +25,16 @@ class User extends Authenticatable
         'phone',
         'role',
         'password',
+        'profile_photo',
     ];
+
+    public function getProfilePhotoUrl()
+    {
+        if ($this->profile_photo) {
+            return asset('storage/' . $this->profile_photo);
+        }
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=9B1B30&color=fff&size=128';
+    }
 
     public function reservasis()
     {
